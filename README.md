@@ -10,7 +10,7 @@ Une application qui facilite les tâches de gestion d'enquête:
 
 Affecter            |  Télécharger | Surveiller   
 :--------------:|:-----------:|:-------------------------:
-![](documentation/affecter.PNG)  | ![](documentation/télécharger.PNG) | ![](documentation/surveiller.png)
+![](documentation/affecter.PNG)  | ![](documentation/télécharger.PNG) | ![](documentation/surveiller.PNG)
 
 
 #  Table des matières:
@@ -85,7 +85,8 @@ Les sections suivantes donnent des indications de la nature des valeurs recherch
 
 Pour que l'application marche, il faut qu'elle sache se localiser sur votre machine. Indiquer la localisation en choissisant le dossier `survey_manager` dans l'interface suivante. Le panneau de gauche indique les répertoires. Le panneau de droite indique le contenu du répertoire sélectionné.
 
-<img src="documentation/sélectionner le dossier.png">
+<img src="documentation/sélectionner le dossier.PNG">
+
 
 ### Détails de Stata
 
@@ -93,7 +94,7 @@ Pour que l'application puisse se servir de Stata pour certaines tâches--par exe
 
 Pour changer de volumes, cliquer sur la liste déroulante en haut et à droite de l'interface
 
-<img src="documentation/sélectionner exécutable Stata.png">
+<img src="documentation/sélectionner exécutable Stata.PNG">
 
 ### Détails du serveur SuSo
 
@@ -145,23 +146,23 @@ Sauvegarder les paramètres. Une fois le bouton appuyé, l'application va créer
 
 Charger le fichier `setup_params.R` qui capte les paramètres de l'utilisateur. Si ce fichier n'existe pas voir comment le créer [ici](#configuration).
 
-<img src="documentation/charger_paramètres.png">
+<img src="documentation/charger_paramètres.PNG">
 
 ## Affecter des entretiens
 
 D'abord, afin d'avoir une liste des enquêteurs, télécharger la composition des équipes de collecte.
 
-<img src="documentation/télécharger.png">
+<img src="documentation/télécharger.PNG">
 
 Puis, renseigner le nombre d'entretiens à affecter à chaque agent voulu. Pour ce faire, saisir un chiffre et appuyer sur la touche d'entrée.
 
-<img src="documentation/affecter.png">
+<img src="documentation/affecter.PNG">
 
 Ensuite, cliquer sur le bouton Créer affectations.
 
 Puis, retrouver le fichier zip d'affectations dans le répertoire suivant: `/survey-manager/outputs/assign-hholds/`
 
-<img src="documentation/fichiers de préchargement.png">
+<img src="documentation/fichiers de préchargement.PNG">
 
 Finalement, importer ce fichier zip sur le serveur:
 
@@ -174,7 +175,7 @@ Finalement, importer ce fichier zip sur le serveur:
 
 ## Télécharger les données
 
-<img src="documentation/télécharger.png">
+<img src="documentation/télécharger.PNG">
 
 - Cliquer sur le bouton des données à télécharger
 - Pour la base ménage, retrouver les bases fusionnées ici: `/survey-manager/data/hhold/combined/`
@@ -199,6 +200,6 @@ Ensuite, indiquer la période couverte par le rapport.
 
 Puis, créer un rapport en cliquant sur le bouton `Créer` en bas d'écran
 
-<img src="documentation/surveiller.png">
+<img src="documentation/surveiller.PNG">
 
 Finalement, retrouvé le rapport crée dans le répertoire suivant: `/survey-manager/outputs/monitoring-tables/`
