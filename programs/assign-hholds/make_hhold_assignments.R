@@ -187,6 +187,14 @@ mutates <- quos(
     source_var %in% c("s00q17", "s00q18") ~ 2    
 )
 
+# identify number groups for purposes of merging numbers and names in reshape
+num_group_mutates <- quos(
+    source_var %in% c("s00q10", "s00q12") ~ 1,
+    source_var %in% c("s00q13", "s00q14") ~ 2,
+    source_var %in% c("s00q15", "s00q16") ~ 3,
+    source_var %in% c("s00q17", "s00q18") ~ 4    
+)
+
 # create preload assignments
 create_preload(
     df_hhold = hholds, 
@@ -196,6 +204,7 @@ create_preload(
     hh_phone_vars = vars(s00q12, s00q14, s00q16, s00q18),
     hh_name_vars = vars(s00q10, s00q13, s00q15, s00q17),
     number_mutate = mutates,
+    num_group_mutate = num_group_mutates,
     number_type_var = numero_membre,
     number_var = numeros_liste,
     name_mutate = mutates,

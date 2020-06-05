@@ -6,6 +6,7 @@ create_preload <- function(
     hh_phone_vars,  # columns passed through vars()
     hh_name_vars,   # columns passed through vars()
     number_mutate,  # quosure that's part of case_when()
+    num_group_mutate, # quosure that's part of case_when()
     number_type_var, # bare variable name for output
     number_var,
     name_mutate,
@@ -75,7 +76,7 @@ members <- df_member %>% mutate(!!!mem_mutate)
 
 print("assigments")
 # assignments
-assignments <<- df_assignments %>%
+assignments <- df_assignments %>%
     rename(!!assign_rename)
 
 # -----------------------------------------------------------------------------
@@ -103,7 +104,7 @@ members <- members %>%
 
 print("Roster of numbers original")
 
-numbers_source <<- hholds %>%
+numbers_source <- hholds %>%
     # replace missing markers with NA
     # ... for phone numbers
     mutate_at(.vars = hh_phone_vars, 
@@ -118,6 +119,7 @@ numbers_long <- numbers_source %>%
     pivot_longer(cols = -interview__id, names_to = "source_var", values_to = "number") %>%
     mutate(
         {{number_type_var}} := case_when(!!!number_mutate),
+        number_group = case_when(!!!num_group_mutate),
         {{number_var}} := number
     )
 
@@ -132,6 +134,7 @@ names_long <- numbers_source %>%
     pivot_longer(cols = -interview__id, names_to = "source_var", values_to = "name") %>%
     mutate(
         {{number_type_var}} := case_when(!!!number_mutate),
+        number_group = case_when(!!!num_group_mutates),
         {{number_name_var}} := name
     )   
 
@@ -148,8 +151,8 @@ print(paste0("Number type var: ", number_type))
 number_roster_id <- str_replace(out_number, "\\.tab", "") %>% 
     paste0(., "__id") %>% sym()
 
-numbers_preload <- full_join(names_long, numbers_long, by = c("interview__id", number_type)) %>%
-    filter(!is.na({{number_var}}) & !is.na({{number_name_var}})) %>%
+numbers_preload <- full_join(names_long, numbers_long, by = c("interview__id", number_type, "number_group")) %>%
+    filter(!is.na({{number_var}})) %>%
     # add roster ID
     group_by(interview__id) %>%
     mutate(
@@ -274,13 +277,9 @@ print("Save and zip preload files")
 hhold_level %>%
 readr::write_tsv(path = paste0(out_dir, out_hhold), na = "")
 
-to_inspect_hhold <<- hhold_level
-
 # member-level
 member_roster %>%
 readr::write_tsv(path = paste0(out_dir, out_member), na = "")
-
-to_inspect_member <<- member_roster
 
 # number-level
 numbers_preload %>%
