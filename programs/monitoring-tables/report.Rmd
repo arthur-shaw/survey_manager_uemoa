@@ -64,6 +64,7 @@ lapply(packagesNeeded, library, character.only = TRUE)
 programs <- c(
     "interviewerResponsible.R", 
     "getFieldStaffList.R",
+    "moduleResponseRate.R",
     "attempt_stats.R",
     "contact_stats.R",
     "conversion_stats.R",
@@ -173,6 +174,34 @@ interviews_metadata <- interviewerResponsible(
 #   "TotalCount": 0,
 #   "Offset": 0
 # }
+
+```
+
+# Response rate
+
+```{r response_rate}
+
+hholds_plus_metadata <- hholds %>%
+    left_join(interviews_metadata, by = c("interview__id", "interview__key"))
+
+createResponseRateTable(
+    data = hholds_plus_metadata, 	
+    resultVar = result, 	
+    toGroup = TRUE, 	
+    groupVar = "interviewer", 	
+    responseRate = hasResult1 /
+        (hasResult1 + hasResult2 + hasResult3 + hasResult4 + hasResult5 + hasResult6 + hasResult7 + hasResult8 + hasResult9),
+    title = "Taux de réponse", 
+    subtitle = "Pourcentage par résultat de l'entretien et par enquêteur", 	
+    totalNumTxt = "Nombre total",
+    responseRateTxt = "Taux de réponse",
+    groupText = "Enquêteur", 
+    overallTxt = "Tous les enquêteurs",
+    thresholdNote = "Le taux de réponse visé est de 80 pourcent.", 
+    threshold = 0.80, 
+    respRateNote = "Taux de réponse = (1)/[(1)+(2)+(3)+(4)+(5)+(6)+(7)+(8)+(9)]*100",
+    tableColor = tableColor
+)
 
 ```
 
