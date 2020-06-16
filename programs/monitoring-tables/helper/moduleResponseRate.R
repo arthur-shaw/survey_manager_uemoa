@@ -24,7 +24,8 @@ createResultDummy <- function(
 	hasResult <- paste0("hasResult", resultVal)
 
 	withDummy <<- data %>%
-	mutate(!! hasResult := {{resultVar}} == resultVal)
+	mutate(!! hasResult := {{resultVar}} == resultVal) %>%
+    select(!!hasResult)
 
 }
 
@@ -51,7 +52,12 @@ moduleResponseRate <- function(
 			# think they do, since they come from Stata value labels
 
 		# iterate over each level
-		withDummies <<- purrr::map_dfc(.x = responseVarValues, .f = createResultDummy, data = data, resultVar = {{resultVar}})
+		withDummies <<- purrr::map_dfc(
+            .x = responseVarValues, 
+            .f = createResultDummy, 
+            data = data, resultVar = {{resultVar}}) %>%
+            select(starts_with("hasResult")) %>%
+            cbind(data)
 
 	# compute counts for each column
 	if (toGroup == FALSE) {
@@ -157,7 +163,10 @@ createResponseRateTable <- function(
 	responseRate, 		# RHS formula for response rate 
 	title = "", 		# table title
 	subtitle = "", 		# table subtitle
+    totalNumTxt,        # column label for total observations in category
+    responseRateTxt,    # column label for response rate
 	groupText = "", 	# column label for group variable
+    overallTxt,         # row name for overall stats row
 	thresholdNote = "", # table note on threshold
 	threshold = 0.95,  	# threshold for table
 	respRateNote = "", 	# footnote explaining response rate
@@ -178,7 +187,7 @@ createResponseRateTable <- function(
 	# compute stats overall
 	overallStats <- moduleResponseRate(data = data, resultVar = {{resultVar}}, 
 		toGroup = FALSE, responseRate = {{responseRate}}) %>%
-		mutate({{groupVar}} := "All teams") %>%
+		mutate({{groupVar}} := overallTxt) %>%
 		select({{groupVar}}, starts_with("perc_"), numObs, responseRate)
 
 	# combine group and overall stats
@@ -201,8 +210,8 @@ createResponseRateTable <- function(
 			subtitle = subtitle) %>% 
 		cols_label(.list = newColNames) %>%
 		cols_label(
-			responseRate = "Response rate",
-			numObs = "Total number") %>%
+			responseRate = responseRateTxt,
+			numObs = totalNumTxt) %>%
 		fmt_number(columns =  starts_with("perc_"), scale_by = 100) %>% # percentage with `%` at end
 		fmt_number(columns = "responseRate", scale_by = 100) %>%
 		tab_options(

@@ -129,6 +129,12 @@ ui <- tagList(
 						h3("Questionnaires"),
 						tags$p("Spécifier le nom ou le motif regex pour identifier le(s) questionnaire(s) du type indiqué."),
 						textInput(inputId = "hhold_pattern", label = "Ménage"),
+						textInput(inputId = "attempt_list", label = "Liste de tentatives", value = "tentative_appel", placeholder = "Nom de variable sur Designer"),
+						textInput(inputId = "interview_result", label = "Résultat de l'entretien", value = "result", placeholder = "Nom de variable sur Designer"),
+						textInput(inputId = "attempt_time", label = "Résultat de l'entretien", value = "heure_debut", placeholder = "Nom de variable sur Designer"),
+						textInput(inputId = "answered_var", label = "Résultat de l'entretien", value = "reponse", placeholder = "Nom de variable sur Designer"),
+						textInput(inputId = "talk_var", label = "Résultat de l'entretien", value = "parle_avec_membre", placeholder = "Nom de variable sur Designer"),
+						textInput(inputId = "consent", label = "Résultat de l'entretien", value = "consentement", placeholder = "Nom de variable sur Designer"),											
 						textInput(inputId = "call_back_pattern", label = "Entretien de rappel"),
 						textInput(inputId = "mystery_pattern", label = "Entretien de répondant secret"),
 
@@ -178,13 +184,13 @@ ui <- tagList(
 			title = "Télécharger",
 			value = "get_data",
 			icon = icon("file-download"),
+			h2("Composition des équipes de collecte"),
+			actionButton("get_teams_data", label = "Télécharger", icon = icon("users")),
 			h2("Ménage"),
 			actionButton("get_hhold_data", label = "Télécharger", icon = icon("home")),
 			actionButton("check_hhold_data", label = "Vérifier", icon = icon("check-square")),
 			actionButton("use_hhold_data", label = "Utiliser ces fichiers", icon = icon("play-circle")),
 			verbatimTextOutput("hhold_data_found"),
-			h2("Composition des équipes de collecte"),
-			actionButton("get_teams_data", label = "Télécharger", icon = icon("users")),
 			h2("Enregistrements sonores"),
 			actionButton("get_audio", label = "Télécharger", icon = icon("file-audio")),
 			actionButton("check_audio_data", label = "Vérifier", icon = icon("check-square")),
@@ -298,6 +304,12 @@ server <- function(input, output, session) {
 			"",
 			"# SuSo survey details",
 			paste0("hhold_pattern 		<- ", '"', input$hhold_pattern, '"'),
+			paste0("attempt_list 		<- ", '"', input$attempt_list, '"'),
+			paste0("interview_result 		<- ", '"', input$interview_result, '"'),
+			paste0("attempt_time 		<- ", '"', input$attempt_time, '"'),
+			paste0("answered_var 		<- ", '"', input$answered_var, '"'),
+			paste0("talk_var 		<- ", '"', input$talk_var, '"'),
+			paste0("consent 		<- ", '"', input$consent, '"'),
 			paste0("call_back_pattern	<- ", '"', input$call_back_pattern, '"'),
 			paste0("mystery_pattern 	<- ", '"', input$mystery_pattern, '"'),
 			"",
@@ -747,7 +759,7 @@ server <- function(input, output, session) {
 
 	# create field check report
 	observeEvent(input$make_fieldcheck_report, {
-		
+
 		waiter_show(html = report_wait_screen)
 
 		fcheck_params = list(
@@ -756,6 +768,12 @@ server <- function(input, output, session) {
 			# pass user-provided paramters to Rmd
 			hhold_file = hhold_file,
 			attempt_file = attempt_file,
+			attempt_list_var = paste0(attempt_list, "__"),
+			interview_result = interview_result,
+			attempt_time = attempt_time,
+			answered_var = answered_var,
+			talk_var = talk_var,
+			consent = consent,
 			number_file = number_file,
 			member_file = member_file,
 			reportStart = input$fcheck_dates[1],
