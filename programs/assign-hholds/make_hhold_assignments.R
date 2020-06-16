@@ -200,7 +200,11 @@ create_preload(
     df_hhold = hholds, 
     hhold_id = hhid, 
     hhold_mutate = quos(chef_nom = s00q10),
-    hhold_rename = c("hhid" = "hhid", "region" = "s00q01", "langue" = "s00q28"),
+    hhold_rename = c(
+        "hhid" = "hhid", 
+        "region" = "s00q01", 
+        "strate" = "strate",
+        "langue" = "s00q28"),
     hh_phone_vars = vars(s00q12, s00q14, s00q16, s00q18),
     hh_name_vars = vars(s00q10, s00q13, s00q15, s00q17),
     number_mutate = mutates,
@@ -217,13 +221,15 @@ create_preload(
         preload_sex = s01q01, 
         preload_age = AgeAnnee, 
         preload_relation = s01q02,
-        s01q07 = s01q02,
-        s01q06 = AgeAnnee,
-        s01q05 = s01q01,
-        s01q01 = s01q00b),
-    mem_name = s01q01,
+        s02q07 = s01q02,    # relationship to head
+        s02q06 = AgeAnnee,  # age
+        s02q05 = s01q01,    # gender
+        s02q01 = s01q00b),  # name
+    mem_name = s02q01,
     df_assignments = new_assignments, 
-    assign_rename = c("hhid" = "hhid", "_responsible" = "_responsible"),
+    assign_rename = c(
+        "hhid" = "hhid", 
+        "_responsible" = "_responsible"),
     out_dir = assign_out_dir,
     out_hhold = out_hhold_preload_file,     
     out_member = out_member_preload_file,      
