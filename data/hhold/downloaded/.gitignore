@@ -1,3 +1,7 @@
 # zip archives and Stata data files
 *.zip
 *.dta
+
+# exclude text and PDF documentation
+*.txt
+*.pdf
