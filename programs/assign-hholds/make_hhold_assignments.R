@@ -217,7 +217,7 @@ create_preload(
     mem_indiv_id = s01q00a,
     mem_mutate = quos(
         preload_pid = s01q00a, 
-        s01q01_open = s01q00b, 
+        s02q01_open = s01q00b, 
         preload_sex = s01q01, 
         preload_age = AgeAnnee, 
         preload_relation = s01q02,
