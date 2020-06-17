@@ -61,7 +61,7 @@ Confirmer que les bases avec un identifiant ménage ont le même identifiant ave
 L'application a besoin des bases suivantes :
 
 - **Échantillon.** Consiste des ménages sélectionnés. Besoin d'une seule variable: l'identifiant ménage. Ne pas inclure les ménages non-sélectionnés.
-- **Ménage.** Consiste des attributs à précharger au niveau ménage. Au minimum, contient l'identifiant ménage, les contacts téléphonique, l'interlocuteur pour chaque contact, et la langue de l'entretien. Pour l'EHCVM, correspond à la base `s00_me_[PAYS][ANNEE].dta`.
+- **Ménage.** Consiste des attributs à précharger au niveau ménage. Au minimum, contient l'identifiant ménage, les contacts téléphonique, l'interlocuteur pour chaque contact, la langue de l'entretien, et une la strate. Pour l'EHCVM, correspond à la base `s00_me_[PAYS][ANNEE].dta`. Pour la variable strate, il faut l'ajouter à la base EHCVM pour faciliter le pré-chargement.
 - **Membres du ménage.** Consiste des infos à précharger au niveau des membres du ménage. Au minimum, contient, l'identifiant ménage, l'identifiant membre, et le nom du membre. Pour l'EHCVM, correspond à la base `s01_me_[PAYS][ANNEE].dta`.
 - **Enquêteurs et des langues parlées.** Contient une liste des enquêteurs en une colonne et les langues parlées en plusieurs colonnes. La colonne des enquêteurs doit s'appeller `login` et contenir le login du compte d'enquêteur. Les colonnes de langues doivent suivre ce format: `s00q28_[valeur] (Nom de la langue)`, où `[valeur]` correspond à la valeur dans la variable de la langue d'interview dans la base ménage (i.e., `s00q28` dans l'EHCVM). Les cellules doivent contenir un `1`, un `0`, ou un vide. Voir un exemple du Mali ici-bas:
 
