@@ -64,36 +64,6 @@ casesToReview <- cases %>%
 		(interview__status %in% statusesToReject) &
 		(interviewComplete == 1))
 
-# incomplete questionnaires to return
-casesToReturn <- cases %>%
-	filter(interviewComplete == 0)
-
-# -----------------------------------------------------------------------------
-# Return incomplete interviews
-# -----------------------------------------------------------------------------
-
-if (nrow(casesToReturn) > 0) {
-
-# add message to returned cases
-interviews_to_return <- casesToReturn %>%
-	rename(interviewId = interview__id, status = interview__status) %>%
-	mutate(comment = "MESSAGE: Continue work") %>%
-	select(interviewId, comment, status)
-
-# return questionnaires
-purrr::pwalk(
-	.l = interviews_to_return,
-	.f = reject_interview,
-	server = site,
-	user = user,
-	password = password,
-	output_dir = paste0(projDir, "/logs/")	
-)
-
-} else if (nrow(casesToReturn) == 0)  {
-	print("No interviews to return to interviewers")
-}
-
 # contine only if there is 1 or more
 if (nrow(casesToReview) >= 1) {
 
@@ -140,6 +110,37 @@ write_dta(
 	version = stataVersion)
 
 print("End interview stats")
+
+# -----------------------------------------------------------------------------
+# Add error if interview completed, but questions left unanswered
+# -----------------------------------------------------------------------------
+
+attributes_raw <- haven::read_dta(file = paste0(constructedDir, "attributes.dta")) %>%
+	filter(attribName == "result_complete" & attribVal == "1") %>%
+	select(interview__id, interview__key, attribName, attribVal, attribVars)
+
+stats_raw <- interviewStats %>%
+	select(interview__id, NotAnswered)
+
+completed_but_unanswered_Qs <- inner_join(attributes_raw, stats_raw, by = "interview__id") %>%
+	filter(NotAnswered > 0) %>%
+	mutate(
+		issueVars = attribVal,
+		issueType = "1",
+		issueDesc = "Entretien achevé, mais des questions sont sans réponse",
+		issueComment = paste0(
+			"ERREUR: L'entretien est marqué comme achevé, mais il y a ", NotAnswered, 
+			"questions laissées sans réponse.",
+			"Veuillez renseigner ces questions."),
+		issueLoc = ""
+	) %>%
+	select(interview__id, interview__key, starts_with("issues"))
+
+issues_raw <- haven::read_dta(file = paste0(constructedDir, "issues.dta"))
+
+issues_updated <- bind_rows(issues_raw, completed_but_unanswered_Qs)
+
+write_dta(issues_updated, path = paste0(constructedDir, "issues.dta"), version = stataVersion)
 
 # -----------------------------------------------------------------------------
 # Decide what actions to take for each interview

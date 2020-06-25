@@ -57,7 +57,7 @@ toReject <-
 	# create reject message that is vertical concatenation of issue text
 	# separated by new line character
 	group_by(interview__id) %>%
-	summarise(rejectMessage = paste(issueComment, collapse = " \n ")) %>%
+	summarise(rejectMessage = paste(issueComment, collapse = " \n")) %>%
 	left_join(casesToReview, by = "interview__id")  %>%
 	left_join(interviewInfo, by = "interview__id")
 

@@ -3,7 +3,7 @@
 # -----------------------------------------------------------------------------
 
 # read cases to review into memory
-casesToReviewPath <- paste0(constructedDir, casesToReviewDta)
+casesToReviewPath <- paste0(constructedDir, "casesToReview.dta")
 
 # filter down to those that are "rejectable"
 casesToReview <- read_stata(casesToReviewPath) %>%

@@ -101,11 +101,11 @@ interview_hasIssues <-
 
 # } else {
 
-	interview_hasUnanswered <-
-		interviewStats %>%
-		mutate(Unanswered = NotAnswered) %>%
-		filter(Unanswered > maxUnanswered) %>% 
-		select(interview__id)
+	# interview_hasUnanswered <-
+	# 	interviewStats %>%
+	# 	mutate(Unanswered = NotAnswered) %>%
+	# 	filter(Unanswered > maxUnanswered) %>% 
+	# 	select(interview__id)
 
 # }
 
@@ -135,7 +135,7 @@ toReject <-
 		by = "interview__id") %>%
 
 	# or has at least N unanswered questions
-	full_join(interview_hasUnanswered, by = "interview__id") %>%
+	# full_join(interview_hasUnanswered, by = "interview__id") %>%
 
 	distinct(interview__id) %>%
 	left_join(casesToReview, by = "interview__id") %>%
@@ -144,25 +144,25 @@ toReject <-
 # write list to disk as a Stata file
 write_dta(data = toReject, path = paste0(resultsDir, "toReject.dta"), version = stataVersion)
 
-# create an issue for each interview with unanswered questions
-issues_hasUnanswered <- 
-	interviewStats %>%
-	# inner_join(legitMissings, by = "interview__id") %>%
-	mutate(Unanswered = NotAnswered) %>%
-	filter(Unanswered > maxUnanswered)	%>%
-	mutate(
-		issueType = 1, 
-		issueDesc = str_conv("Unanswered questions", encoding = "UTF-8"),
-		issueComment = str_conv(paste0("ERROR: ", Unanswered, " questions left unanswered"), encoding = "UTF-8"),
-		issueLoc = "",
-		issueVars = ""
-		) %>%
-	select(interview__id, Unanswered, NotAnswered, starts_with("issue")) %>%
-	left_join(casesToReview, by = "interview__id") %>%
-	select(interview__id, interview__key, issueType, issueDesc, issueComment)
+# # create an issue for each interview with unanswered questions
+# issues_hasUnanswered <- 
+# 	interviewStats %>%
+# 	# inner_join(legitMissings, by = "interview__id") %>%
+# 	mutate(Unanswered = NotAnswered) %>%
+# 	filter(Unanswered > maxUnanswered)	%>%
+# 	mutate(
+# 		issueType = 1, 
+# 		issueDesc = str_conv("Question(s) laissées sans réponse", encoding = "UTF-8"),
+# 		issueComment = str_conv(paste0("ERROR: ", Unanswered, " questions laissées sans réponse"), encoding = "UTF-8"),
+# 		issueLoc = "",
+# 		issueVars = ""
+# 		) %>%
+# 	select(interview__id, Unanswered, NotAnswered, starts_with("issue")) %>%
+# 	left_join(casesToReview, by = "interview__id") %>%
+# 	select(interview__id, interview__key, issueType, issueDesc, issueComment)
 
 # add these issues has issues data base
-issues <- full_join(issues, issues_hasUnanswered, by = c("interview__id", "interview__key", "issueType", "issueDesc", "issueComment"))
+# issues <- full_join(issues, issues_hasUnanswered, by = c("interview__id", "interview__key", "issueType", "issueDesc", "issueComment"))
 	# bind_rows(issues, issues_hasUnanswered)
 
 # =============================================================================
