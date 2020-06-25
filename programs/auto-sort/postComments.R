@@ -311,11 +311,12 @@ post_var_comment <- function(
 	lapply(packagesNeeded, library, character.only = TRUE)
 
 	# formulate API call	
-	call <- paste0("https://", server, ".mysurvey.solutions", 
+	base_url <- paste0("https://", server, ".mysurvey.solutions", 
 		"/api/v1/interviews/", interview__id, 			# interview
-		"/comment-by-variable/", issueVars, 			# variable
-		"?comment=", curlPercentEncode(issueComment) 	# comment
+		"/comment-by-variable/", issueVars	 			# variable
 		)
+
+	call <- httr::modify_url(url = base_url, query = list(comment = comment))
 
 	# make request
 	response <- httr::POST(

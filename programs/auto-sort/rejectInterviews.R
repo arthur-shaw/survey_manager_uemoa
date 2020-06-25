@@ -15,7 +15,6 @@ reject_interview <- function(
 
 # packages needed for this program 
 packagesNeeded <- c(
-	"RCurl", 	# to check that server exists
 	"httr", 	# to talk with the server
 	"stringr", 	# to check contents of `interviewId`
 	"glue", 	# to create more readable error messages
@@ -118,12 +117,14 @@ if (!dir.exists(output_dir)) {
 # =============================================================================	
 
 # formulate API call
-call <- paste0("https://", server, ".mysurvey.solutions", 
+base_url <- paste0("https://", server, ".mysurvey.solutions", 
 	"/api/v1/interviews/", interviewId, 
 	case_when(
 		status == 100 ~ "/reject", 		# ... if Completed
-		status == 120 ~ "/hqreject"), 	# ... if ApprovedBySupervisor
-	"?comment=", curlPercentEncode(comment))
+		status == 120 ~ "/hqreject") 	# ... if ApprovedBySupervisor
+	)
+
+call <- httr::modify_url(url = base_url, query = list(comment = comment))
 
 # make request
 response <- PATCH(url = call, config = authenticate(user = user, password = password))
