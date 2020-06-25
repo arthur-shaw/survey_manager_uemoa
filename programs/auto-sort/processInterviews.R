@@ -173,7 +173,7 @@ source(paste0(rejectProgDir, "flagPersistentProblems.R"), echo = TRUE)
 print("End flagPersistentProblems.R")
 
 # -----------------------------------------------------------------------------
-# Execute rejections, posting comments and rjecting
+# Execute rejections, posting comments and rejecting
 # -----------------------------------------------------------------------------
 
 if (to_reject == TRUE) {

@@ -10,7 +10,7 @@
 packagesNeeded <- c(
     "purrr",    # to facilitate loops
     "haven", 	# to injest Stata and SPSS files
-	"readxl",   # to ingest Exoucel
+	"readxl",   # to ingest Excel
     "tidyr",    # to reshape data set
     "stringr",  # to manipulate strings
 	"dplyr",    # to do basic data wrangling
