@@ -2,5 +2,6 @@
 *.dta
 
 # Excel files
+*.csv
 *.xlsx
 *.xls

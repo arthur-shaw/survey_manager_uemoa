@@ -1,5 +1,5 @@
 # setup file
-setup_params.R
+setup_params*.R
 
 # History files
 .Rhistory
