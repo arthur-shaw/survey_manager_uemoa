@@ -57,13 +57,14 @@ if (!exists("comments_to_post")) {
 # if there are any comments, post them
 if (nrow(comments_to_post) > 0) {
 
-	post_comments_to_vars(
-		file_comments_to_post = comments_to_post, 
-		server = server,
-		user = login,
-		password = password,
-		output_dir = paste0(projDir, "/logs/")
-	)
+	comments <- comments_to_post %>%
+		select(interview__id, interview__key, issueVars, issueLoc, issueComment)
+
+	purrr::pwalk(
+		.l = comments,
+		.f = post_var_comment,
+		server = site, user = user, password = password,
+		log_dir = paste0(projDir, "/logs/"))
 
 }
 

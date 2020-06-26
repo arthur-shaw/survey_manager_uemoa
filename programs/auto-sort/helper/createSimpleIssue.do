@@ -53,29 +53,29 @@ syntax using/ , ///			/// full path to error file
 			// if variable occurs in a roster
 			else if ("`issueLocIDs'" != "") {
 
-				// for first-level roster, a single index; example: [1]
+				// for first-level roster, a single index; example: 1
 				local numLocIndices : list sizeof issueLocIDs
 				if (`numLocIndices' == 1) {
 
-					replace issueLoc = "[" + string(`issueLocIDs') + "]"	
+					replace issueLoc = string(`issueLocIDs')
 
 				}
 
-				// for second-level roster, an array of two indices; example [2,1]
+				// for second-level roster, an array of two indices; example 2,1
 				else if (`numLocIndices' == 2) {
 
 					tokenize "`issueLocIDs'"
-					replace issueLoc = "[" + string(`1') + "," + string(`2') + "]"
+					replace issueLoc = string(`1') + "," + string(`2')
 	
 				}
 
-				// for third-level roster, an array of three indices; example [2,1,4]
+				// for third-level roster, an array of three indices; example 2,1,4
 				else if (`numLocIndices' == 3) {
 
 					tokenize "`issueLocIDs'"
-					replace issueLoc = 	"[" + 	string(`1') + "," + ///
-												string(`2') + "," + ///
-												string(`3') + "]"
+					replace issueLoc = 	string(`1') + "," + ///
+										string(`2') + "," + ///
+										string(`3')
 	
 				}
 
