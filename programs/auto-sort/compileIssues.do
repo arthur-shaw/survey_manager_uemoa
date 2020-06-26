@@ -190,7 +190,7 @@ createComplexIssue , ///
 	whichAttributes(income_ag work_ag_hh result_complete) ///
 	issueCondit(result_complete == 1 & work_ag_hh == 1 & income_ag == 0) ///
 	issueType(1) ///
-	issueDesc("Ménage subsiste de l'activité agricole, mais aucune activité agricole délcarée") ///
+	issueDesc("Ménage subsiste de l'activité agricole, mais aucune activité agricole déclarée") ///
 	issueComm("`agComm'")
 
 * NFE is income source, but no NFE reported
@@ -205,7 +205,7 @@ createComplexIssue , ///
 	whichAttributes(income_biz work_biz_hh result_complete) ///
 	issueCondit(result_complete == 1 & work_biz_hh == 1 & income_biz == 0) ///
 	issueType(1) ///
-	issueDesc("Ménage subsiste de l'activité commerciale, mais aucune entreprise délcarée") ///
+	issueDesc("Ménage subsiste de l'activité commerciale, mais aucune entreprise déclarée") ///
 	issueComm("`bizComm'")
 
 /*-----------------------------------------------------------------------------
@@ -237,6 +237,16 @@ createComplexIssue , ///
 	issueType(1) ///
 	issueDesc("Aucun CM") ///
 	issueComm("noHeadComm")
+
+use "`rawDir'/membres.dta", clear
+
+createSimpleIssue using "`issuesPath'", ///
+	flagWhere(membres__id == 1) ///
+	issueType(2) ///
+	issueDesc("Test commment") ///
+	issueComm("Voilà un commentaire pour une valeur étrange.") ///
+	issueLocIDs(membres__id) ///
+	issueVar(s02q07)
 
 * no original members
 local noStillMember = "ERREUR: Aucun membre original du ménage. " + ///
