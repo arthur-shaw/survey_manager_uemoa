@@ -238,16 +238,6 @@ createComplexIssue , ///
 	issueDesc("Aucun CM") ///
 	issueComm("noHeadComm")
 
-use "`rawDir'/membres.dta", clear
-
-createSimpleIssue using "`issuesPath'", ///
-	flagWhere(membres__id == 1) ///
-	issueType(2) ///
-	issueDesc("Test commment") ///
-	issueComm("Voilà un commentaire pour une valeur étrange.") ///
-	issueLocIDs(membres__id) ///
-	issueVar(s02q07)
-
 * no original members
 local noStillMember = "ERREUR: Aucun membre original du ménage. " + ///
 	"Confirmer que le ménage actuel ne contien aucun membre identifé" + ///
